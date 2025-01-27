@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Intution</title>
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Maitree:wght@200;300;400;500;600;700&display=swap");
+
+    * {
+        font-family: "Maitree", serif;
+        font-weight: 300;
+    }
+</style>
+
+<body>
+    <nav class="z-20 fixed h-[80px] w-full bg-[#000000d0]  text-white flex justify-between items-center">
+        <h1 class="ml-8 font-bold text-3xl ">HealthCare</h1>
+        <ul class="justify-center items-center hidden md:flex">
+            <li class="m-2">
+                <a href="/">Home</a>
+            </li>
+            <li class="m-2">
+                <a href="/model">Models</a>
+            </li>
+            <li class="m-2">
+                <a href="/intution">Intution</a>
+            </li>
+            <!-- <li class="m-2">
+            <a href="/models">Feedback</a>
+          </li> -->
+        </ul>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black hidden md:block">
+            Get Started
+        </button>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black block md:hidden">
+            MENU
+        </button>
+    </nav>
+
+    <section class=" bg-black text-white pt-[100px]">
+        <div class="flex flex-col justify-center items-start w-[90%] mx-auto h-[250px]">
+            <h2 data-aos="fade-in" data-aos-duration="1000" class="">
+                Intution
+            </h2>
+            <h1 data-aos="fade-in" data-aos-duration="1000" class="text-[1.5rem]">
+                We are pioneering general-purpose multimodal simulators of the world.
+            </h1>
+        </div>
+
+        <div data-aos="fade-in" data-aos-duration="1000"
+            class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-8 md:gap-14 mx-auto w-[92%]">
+            <div>
+                <img src="{{url_for('static',filename='dia.jpg')}}" alt="" class="h-[250px] object-cover" />
+                <h1>Early Diagnosis and Detection</h1>
+            </div>
+
+            <div>
+                <img src="{{url_for('static',filename='plans.jpg')}}" alt="" class="h-[250px] object-cover" />
+                <h1> Personalized Treatment Plans</h1>
+            </div>
+
+            <div>
+                <img src="{{url_for('static',filename='aibrain.jpg')}}" alt="" class="h-[250px] object-cover" />
+                <h1> Predictive Analytics for HealthCare</h1>
+            </div>
+        </div>
+
+        <div class="flex flex-col justify-center items-center mt-20">
+            <h1 data-aos="fade-in" data-aos-duration="1000" class="text-[5rem] mb-2">
+                For anyone who wants to diagnos.
+            </h1>
+
+            <video data-aos="fade-up" data-aos-duration="1000" src="{{url_for('static',filename='aiC.mp4')}}" autoPlay
+                muted loop playsInline class="w-[70%] h-[450px] object-cover " typeof="video/mp4"></video>
+        </div>
+    </section>
+
+</body>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+
+</html>

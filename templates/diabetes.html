@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Document</title>
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Maitree:wght@200;300;400;500;600;700&display=swap");
+
+    * {
+        font-family: "Maitree", serif;
+        font-weight: 300;
+    }
+</style>
+
+<body>
+    <nav class="z-20 fixed h-[80px] w-full bg-[#000000d0]  text-white flex justify-between items-center">
+        <h1 class="ml-8 font-bold text-3xl ">HealthCare</h1>
+        <ul class="justify-center items-center hidden md:flex">
+            <li class="m-2">
+                <a href="/">Home</a>
+            </li>
+            <li class="m-2">
+                <a href="/model">Models</a>
+            </li>
+            <li class="m-2">
+                <a href="/intution">Intution</a>
+            </li>
+            <!-- <li class="m-2">
+            <a href="/models">Feedback</a>
+          </li> -->
+        </ul>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black hidden md:block">
+            Get Started
+        </button>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black block md:hidden">
+            MENU
+        </button>
+    </nav>
+    <section class="pt-[80px]">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-x-10 w-[90%] mx-auto py-10">
+            <div class="flex justify-center items-center">
+                <img data-aos="zoom-in" data-aos-duration="1000" src="{{url_for('static',filename='dibetes.jpg')}}"
+                    alt="" class="h-[400px] w-[80%] rounded-[100%] object-cover" />
+            </div>
+            <div data-aos="fade-left" data-aos-duration="1000">
+                <h1 class="text-[3rem] font-bold mb-2">
+                    What is Dibeties ? How Exactly it can be identified ?
+                </h1>
+                <p>
+                    Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                    Exercitationem ratione dolor officiis temporibus? Quis fugiat velit
+                    neque debitis saepe corrupti sed non consectetur, rerum asperiores
+                    sequi aliquid exercitationem provident at? Lorem ipsum dolor sit
+                    amet consectetur, adipisicing elit. Nobis omnis molestias maxime
+                    distinctio quaerat at voluptates repellat dolor minus culpa?
+                </p>
+                <button class="border border-black px-2 py-1 text-xl mt-10 hover:underline">
+                    <Link to="/models">Go Back</Link>
+                </button>
+            </div>
+        </div>
+
+        <!-- {/* form to fill data */} -->
+        <div class="">
+            <h1 data-aos="fade-in" data-aos-duration="1000"
+                class="text-[3.5rem] w-[88%] mx-auto capitalize text-center mt-20">
+                Fill The Given Information To Predict You have Dibeties or not ?
+            </h1>
+
+           
+            <!-- <div data-aos="zoom-in-up" data-aos-duration="1000" class="flex justify-center items-center"> -->
+               
+                <form action="{{url_for('predictDiabeties')}}" method="post" class="flex flex-col mx-auto max-w-[500px] my-8">
+                    <input type="text" name="Pregnancies", placeholder="Pregnancies" required class="text-lg border my-1">
+                    <input type="text" name="Glucose", placeholder="Glucose" required class="text-lg border my-1">
+                    <input type="text" name="BloodPressure", placeholder="BloodPressure" required class="text-lg border my-1">
+                    <input type="text" name="SkinThickness", placeholder="SkinThickness" required class="text-lg border my-1">
+                    <input type="text" name="Insulin", placeholder="Insulin" required class="text-lg border my-1">
+                    <input type="text" name="BMI", placeholder="BMI" required class="text-lg border my-1">
+                    <input type="text" name="DiabetesPedigreeFunction", placeholder="DiabetesPedigreeFunction" required class="text-lg border my-1">
+                    <input type="text" name="Age", placeholder="Age" required class="text-lg border my-1">
+            
+                    <button type="submit" class="bg-blue-500 text-white text-lg">Predict</button>
+                    
+                </form>
+    
+            <!-- </div> -->
+        </div>
+    </section>
+
+</body>
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+
+</html>
+
+
+<!-- 
+ <form action="#" class="mt-10 w-full">
+                    <div class="flex  justify-between sm:w-[65%] mx-auto my-4">
+                        <label htmlFor="fever" class="text-xl capitalize">
+                            1. do you have fever ?
+                        </label>
+                        <select name="fever" id="fever" class="px-6 text-xl capitalize outline-double">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="flex  justify-between sm:w-[65%] mx-auto my-4">
+                        <label htmlFor="Headache" class="text-xl capitalize">
+                            2. do you have Headache ?
+                        </label>
+                        <select name="Headache" id="Headache" class="px-6 text-xl capitalize outline-double">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="flex  justify-between sm:w-[65%] mx-auto my-4">
+                        <label htmlFor="JointPain" class="text-xl capitalize">
+                            3. do you have JointPain ?
+                        </label>
+                        <select name="JointPain" id="JointPain" class="px-6 text-xl capitalize outline-double">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <div class="flex  justify-between sm:w-[65%] mx-auto my-4">
+                        <label htmlFor="Bleeding" class="text-xl capitalize">
+                            4. do you have Bleeding ?
+                        </label>
+                        <select name="Bleeding" id="Bleeding" class="px-6 text-xl capitalize outline-double">
+                            <option value="yes">Yes</option>
+                            <option value="no">No</option>
+                        </select>
+                    </div>
+
+                    <span class="flex justify-center items-center my-6">
+                        <input type="submit" value="Predict"
+                            class="px-4 py-1 text-xl cursor-pointer font-bold border-2 bg-black text-white hover:bg-white hover:text-black hover:border-black" />
+                    </span>
+                </form>
+-->

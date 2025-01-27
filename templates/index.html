@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+    <title>Home</title>
+</head>
+<style>
+    @import url("https://fonts.googleapis.com/css2?family=Maitree:wght@200;300;400;500;600;700&display=swap");
+
+    * {
+        font-family: "Maitree", serif;
+        font-weight: 300;
+    }
+
+    .cen {
+        position: absolute;
+        top: 70%;
+        right: 50%;
+        transform: translate(50%, -50%);
+    }
+</style>
+
+<body>
+    <nav class="z-20 fixed h-[80px] w-full bg-[#000000d0]  text-white flex justify-between items-center">
+        <h1 class="ml-8 font-bold text-3xl ">HealthCare</h1>
+        <ul class="justify-center items-center hidden md:flex">
+            <li class="m-2">
+                <a href="/">Home</a>
+            </li>
+            <li class="m-2">
+                <a href="/model">Models</a>
+            </li>
+            <li class="m-2">
+                <a href="/intution">Intution</a>
+            </li>
+            <!-- <li class="m-2">
+            <a href="/models">Feedback</a>
+          </li> -->
+        </ul>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black hidden md:block">
+            Get Started
+        </button>
+        <button class="mr-8 border px-3 rounded-3xl py-1 border-white hover:bg-white hover:text-black block md:hidden">
+            MENU
+        </button>
+    </nav>
+    <div class="overflow-hidden">
+
+        <video autoPlay muted loop playsInline class="min-h-[120vh] min-w-full object-cover bg-fixed">
+            <source src="{{url_for('static',filename='bgC.mp4')}}" type="video/mp4" />
+        </video>
+
+        <div class="cen text-white text-center">
+            <h1 data-aos="zoom-in" data-aos-duration="1000" class="text-[4.3rem] sm:text-[5rem] font-bold">
+                Introducing Diagno.
+            </h1>
+            <h2 data-aos="fade-in" data-aos-duration="1000" data-aos-offset="0" class="text-xl">
+                A new frontier for fast, high-accurate, preciesd model for healthCare.
+            </h2>
+        </div>
+
+        <!-- {/* models section */} -->
+
+        <section class="min-h-[120vh] w-full">
+            <div class="flex justify-center items-center text-center flex-col mt-14 mb-8 md:w-[70%] mx-auto">
+                <h1 data-aos="fade-in" data-aos-duration="1000" class="text-[4rem]">
+                    Advancing creativity with Machine Learning.
+                </h1>
+                <h2 data-aos="fade-in" data-aos-duration="1000" class="text-xl">
+                    Runway is an applied AI research company building the next era of
+                    art, entertainment and human creativity.
+                </h2>
+                <button data-aos="fade-in" data-aos-duration="1000"
+                    class="border px-2 py-1 border-black rounded-3xl mt-8">
+                    <Link to="/models">Our Tools</Link>
+                </button>
+            </div>
+
+            <!-- {/* model cards */} -->
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:w-[80%] mx-auto px-6 mt-10">
+                <div data-aos="zoom-in-right" data-aos-duration="1000" class="flex justify-center items-start flex-col">
+
+                    <img src="{{url_for('static',filename='heart.jpg')}}" alt=""
+                        class="h-[300px] w-full object-cover bg-fixed" />
+                    <h1 class="text-xl font-bold my-2">Heart Disease</h1>
+                    <h2>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione quo, aut iste praesentium
+                        veritatis similique ea nam deleniti, iusto harum molestiae vero exercitationem corporis
+                        consectetur esse labore voluptas, deserunt tempora!
+                    </h2>
+                </div>
+                <div data-aos="zoom-in" data-aos-duration="1000" class="flex justify-center items-start flex-col">
+                    <img src="{{url_for('static',filename='dibetes.jpg')}}" alt=""
+                        class="h-[300px] w-full object-cover" />
+                    <h1 class="text-xl font-bold my-2">Dibeties</h1>
+                    <h2>
+                        Diabetes is a chronic condition characterized by high blood sugar
+                        levels due to the body’s inability to produce or effectively use
+                        insulin.
+                    </h2>
+                </div>
+                <div data-aos="zoom-in-left" data-aos-duration="1000" class="flex justify-center items-start flex-col">
+                    <img src="{{url_for('static',filename='kidney.jpeg')}}" alt=""
+                        class="h-[300px] w-full object-cover" />
+                    <h1 class="text-xl font-bold my-2">Kidney Disease</h1>
+                    <h2>
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam totam voluptates culpa!
+                        Exercitationem, distinctio laudantium aperiam perferendis animi minima obcaecati accusamus
+                        fugiat tempore in ducimus, id minus quaerat veritatis facere.
+                    </h2>
+                </div>
+            </div>
+        </section>
+
+        <!-- {/* about section */} -->
+
+        <section class="mt-8 bg-black text-white">
+            <div class="flex flex-col justify-center items-start w-[90%] mx-auto h-[250px]">
+                <h2 data-aos="fade-in" data-aos-duration="1000" class="">
+                    Intution
+                </h2>
+                <h1 data-aos="fade-in" data-aos-duration="1000" class="text-[1.5rem] ">
+                    We are pioneering general-purpose multimodal simulators of the
+                    world.
+                </h1>
+            </div>
+
+            <div data-aos="fade-in" data-aos-duration="1000"
+                class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 px-8 md:gap-14 mx-auto w-[92%]">
+                <div>
+                    <img src="{{url_for('static',filename='diagnosis.jpg')}}" alt="" class="h-[250px] object-cover" />
+                    <h1>Early Diagnosis and Detection</h1>
+                </div>
+
+                <div>
+                    <img src="{{url_for('static',filename='plans.jpg')}}" alt="" class="h-[250px] object-cover" />
+                    <h1> Personalized Treatment Plans</h1>
+                </div>
+
+                <div>
+                    <img src="{{url_for('static',filename='aibrain.jpg')}}" alt="" class="h-[250px] object-cover" />
+                    <h1> Predictive Analytics for HealthCare</h1>
+                </div>
+            </div>
+
+            <div class="flex flex-col justify-center items-center mt-20">
+                <h1 data-aos="fade-in" data-aos-duration="1000" class="text-[5rem] mb-2 text-center">
+                    For anyone who wants to diagnos.
+                </h1>
+
+                <video data-aos="fade-up" data-aos-duration="1000" src="{{url_for('static',filename='aiC.mp4')}}"
+                    autoPlay muted loop playsInline class="w-[70%] h-[450px] object-cover " typeof="video/mp4"></video>
+            </div>
+        </section>
+    </div>
+</body>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script>
+    AOS.init();
+</script>
+
+</html>
