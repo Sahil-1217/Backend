@@ -86,4 +86,4 @@ def KidneyPredictionResult():
     return render_template('result.html', title=prediction, clr=color)
 
 if __name__ == "__main__":
-    app.run(debug=False, port=5001)  # For development
+    app.run(debug=True, port=5001)  # For development
