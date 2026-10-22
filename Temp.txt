@@ -22,3 +22,243 @@ Sahil N. Bhoye
 Junior Associate Engineer
 
 https://share.gemini.google/M8ccOqNWrb2U
+
+
+
+import numpy as np
+import pandas as pd
+import random
+from datetime import datetime, timedelta
+
+# Set seed for reproducibility
+np.random.seed(42)
+random.seed(42)
+
+# Configuration scales
+NUM_MEMBERS = 3000
+NUM_INTERACTIONS = 12000
+NUM_AGENTS = 60
+
+# ==========================================
+# 1. DATASET 1: MEMBER PROFILE
+# Columns: Member_ID, Age, Plan_Type, Region
+# ==========================================
+member_ids = [f"MEM_{10000 + i}" for i in range(NUM_MEMBERS)]
+plan_types = ["HMO Standard", "PPO Comprehensive", "Medicare Advantage", "HDHP Silver", "POS Platinum"]
+regions = ["Northern California", "Southern California", "Colorado", "Northwest", "Mid-Atlantic", "Georgia"]
+
+# Distribute ages with realistic healthcare demographic skew
+ages = np.random.choice(
+    [np.random.randint(18, 35), np.random.randint(35, 55), np.random.randint(55, 82)],
+    size=NUM_MEMBERS,
+    p=[0.25, 0.40, 0.35]
+)
+# Re-sample smoothly within brackets
+ages = [int(np.random.normal(loc=52, scale=16)) for _ in range(NUM_MEMBERS)]
+ages = [max(19, min(85, a)) for a in ages]
+
+df_member_profile = pd.DataFrame({
+    "Member_ID": member_ids,
+    "Age": ages,
+    "Plan_Type": np.random.choice(plan_types, size=NUM_MEMBERS, p=[0.35, 0.25, 0.20, 0.12, 0.08]),
+    "Region": np.random.choice(regions, size=NUM_MEMBERS, p=[0.30, 0.25, 0.15, 0.12, 0.10, 0.08])
+})
+
+# ==========================================
+# 2. AGENTS SETUP (For Operations Mapping)
+# Columns: Agent_ID, Queue, Department, Shift
+# ==========================================
+agent_ids = [f"AGT_{100 + i}" for i in range(NUM_AGENTS)]
+departments_queues = {
+    "Member Services": ["General Inquiry", "Eligibility & Verification"],
+    "Claims Administration": ["Claims Inquiries", "Disputed Denials"],
+    "Pharmacy Ops": ["Rx Refill", "Prior Authorization"],
+    "Clinical Triage": ["Specialist Referral", "Nurse Advice Line"],
+    "Care Navigation": ["Care Coordinator", "Digital Self-Service Support"]
+}
+shifts = ["Morning", "Afternoon", "Evening", "Night"]
+
+agent_records = []
+for a_id in agent_ids:
+    dept = random.choice(list(departments_queues.keys()))
+    queue = random.choice(departments_queues[dept])
+    shift = np.random.choice(shifts, p=[0.45, 0.35, 0.15, 0.05])
+    agent_records.append({
+        "Agent_ID": a_id,
+        "Queue": queue,
+        "Department": dept,
+        "Shift": shift
+    })
+df_agent_lookup = pd.DataFrame(agent_records)
+
+# ==========================================
+# 3. INTERACTION GENERATION & SIMULATION
+# Generates correlated values for Datasets 2, 3, 4, 5
+# ==========================================
+interaction_ids = [f"INT_{100000 + i}" for i in range(NUM_INTERACTIONS)]
+assigned_members = np.random.choice(member_ids, size=NUM_INTERACTIONS)
+assigned_agents = np.random.choice(agent_ids, size=NUM_INTERACTIONS)
+
+channels = ["Call", "Chat", "Email", "Mobile App"]
+reasons = ["Appointments", "Billing", "Claims", "Pharmacy", "Provider Access"]
+
+# Date window across 9 months
+start_date = datetime(2026, 1, 1)
+
+interaction_data = []
+performance_data = []
+operations_data = []
+transcript_data = []
+
+# Template banks for NLP and topic modeling
+text_templates = {
+    "Claims": {
+        "call": "Member called to verify why their out-of-pocket claim for procedure #8841 was denied by insurance.",
+        "chat": "Can someone explain my Explanation of Benefits? The deductible amount looks inaccurate.",
+        "neg_feedback": "Terrible billing support. My claim has been pending for over 6 weeks with zero updates.",
+        "pos_feedback": "Representative resolved my claim denial quickly and re-submitted the paperwork."
+    },
+    "Appointments": {
+        "call": "Member seeking earliest availability for an in-network dermatology consultation in their region.",
+        "chat": "Need to reschedule my follow-up appointment with primary care physician due to a scheduling conflict.",
+        "neg_feedback": "Wait time for specialist appointments is unacceptable. Earliest slot is 3 months away.",
+        "pos_feedback": "The booking agent was polite and found a cancellation slot for me tomorrow."
+    },
+    "Pharmacy": {
+        "call": "Member checking status of maintenance prescription mail-order delivery and generic drug tier.",
+        "chat": "Requesting a 90-day refill authorization for prescribed blood pressure medication.",
+        "neg_feedback": "Pharmacy delivery was delayed by four business days. Ran completely out of my prescription.",
+        "pos_feedback": "Very fast refill process via the online portal, thank you."
+    },
+    "Billing": {
+        "call": "Inquiry regarding surprise premium rate adjustment shown on current monthly billing statement.",
+        "chat": "I was billed twice for my monthly premium deduction. Please initiate a refund to my bank.",
+        "neg_feedback": "Unclear invoice charges and rude support when asking for an itemized fee breakdown.",
+        "pos_feedback": "The agent clearly broke down my copays and helped setup automated recurring payments."
+    },
+    "Provider Access": {
+        "call": "Member requesting an updated roster of accepting in-network pediatricians within a 15-mile radius.",
+        "chat": "Is Dr. Vance still affiliated with the Kaiser facility on Main Street?",
+        "neg_feedback": "Directory on the portal is out of date; two listed clinics no longer take Kaiser members.",
+        "pos_feedback": "Representative accurately located an in-network pediatrician close to our home."
+    }
+}
+
+for i in range(NUM_INTERACTIONS):
+    int_id = interaction_ids[i]
+    mem_id = assigned_members[i]
+    agt_id = assigned_agents[i]
+    
+    # 1. Channel & Contact Reason
+    channel = np.random.choice(channels, p=[0.48, 0.28, 0.12, 0.12])
+    reason = np.random.choice(reasons, p=[0.26, 0.22, 0.24, 0.16, 0.12])
+    
+    # 2. Date
+    int_date = start_date + timedelta(days=int(np.random.randint(0, 270)), minutes=int(np.random.randint(0, 1440)))
+    
+    # 3. Repeat Contacts (Probabilistic correlation)
+    # Claims and Billing have higher repeat contact rates
+    contact_lambda = 2.2 if reason in ["Claims", "Billing"] else 1.4
+    total_contacts = int(np.random.poisson(lam=contact_lambda)) + 1
+    
+    # 4. First Contact Resolution (FCR)
+    # Higher chance of FCR if single contact or digital channel
+    fcr_prob = 0.85 if total_contacts == 1 else (0.45 if total_contacts == 2 else 0.18)
+    if channel in ["Mobile App", "Chat"]:
+        fcr_prob = min(0.95, fcr_prob + 0.10)
+    fcr = "Y" if np.random.rand() < fcr_prob else "N"
+    
+    # 5. Resolution Time (in minutes)
+    # Voice calls have higher resolution time than app or chat
+    base_res_time = 14.0 if channel == "Call" else (7.0 if channel == "Chat" else 22.0)
+    if fcr == "N":
+        base_res_time *= 2.1
+    resolution_time = round(max(2.0, np.random.normal(loc=base_res_time, scale=base_res_time * 0.35)), 1)
+    
+    # 6. Escalation Probability (Hypothesis 1, 2 & 3 embedded)
+    # Escalation increases with contacts, long resolution time, and voice channels
+    esc_odds = 0.05
+    if total_contacts > 2:
+        esc_odds += 0.35
+    if resolution_time > 20.0:
+        esc_odds += 0.25
+    if fcr == "N":
+        esc_odds += 0.20
+    if channel in ["Mobile App", "Chat"]:
+        esc_odds -= 0.10
+    
+    esc_odds = max(0.02, min(0.92, esc_odds))
+    escalation_flag = 1 if np.random.rand() < esc_odds else 0
+    
+    # 7. Satisfaction Score (1 to 5)
+    # Driven by FCR, Escalation, and Resolution Time
+    if escalation_flag == 1 or fcr == "N":
+        sat_score = np.random.choice([1, 2, 3, 4], p=[0.45, 0.35, 0.15, 0.05])
+    elif resolution_time < 10.0 and fcr == "Y":
+        sat_score = np.random.choice([3, 4, 5], p=[0.10, 0.40, 0.50])
+    else:
+        sat_score = np.random.choice([1, 2, 3, 4, 5], p=[0.05, 0.15, 0.40, 0.30, 0.10])
+        
+    # 8. Agent and Operations Mapping
+    agent_info = df_agent_lookup[df_agent_lookup["Agent_ID"] == agt_id].iloc[0]
+    
+    # 9. Transcripts & Feedback Generation
+    call_transcript = text_templates[reason]["call"] if channel == "Call" else np.nan
+    chat_transcript = text_templates[reason]["chat"] if channel == "Chat" else np.nan
+    feedback = text_templates[reason]["neg_feedback"] if sat_score <= 2 else text_templates[reason]["pos_feedback"]
+    
+    # Append records
+    interaction_data.append({
+        "Interaction_ID": int_id,
+        "Member_ID": mem_id,
+        "Contact_Channel": channel,
+        "Interaction_Date": int_date.strftime("%Y-%m-%d %H:%M:%S"),
+        "Interaction_Reason": reason,
+        "Total_Contacts": total_contacts
+    })
+    
+    performance_data.append({
+        "Interaction_ID": int_id,
+        "Resolution_Time": resolution_time,
+        "Escalation_Flag": escalation_flag,
+        "Satisfaction_Score": sat_score,
+        "First_Contact_Resolution": fcr
+    })
+    
+    operations_data.append({
+        "Interaction_ID": int_id,
+        "Agent_ID": agt_id,
+        "Queue": agent_info["Queue"],
+        "Department": agent_info["Department"],
+        "Shift": agent_info["Shift"]
+    })
+    
+    transcript_data.append({
+        "Interaction_ID": int_id,
+        "Call_Transcript": call_transcript,
+        "Chat_Transcript": chat_transcript,
+        "Feedback_Comments": feedback
+    })
+
+# Convert to DataFrames
+df_interaction_history = pd.DataFrame(interaction_data)
+df_service_performance = pd.DataFrame(performance_data)
+df_operations_data = pd.DataFrame(operations_data)
+df_transcript_data = pd.DataFrame(transcript_data)
+
+# ==========================================
+# EXPORT DATASETS TO CSV
+# ==========================================
+df_member_profile.to_csv("Member_Profile.csv", index=False)
+df_interaction_history.to_csv("Interaction_History.csv", index=False)
+df_service_performance.to_csv("Service_Performance.csv", index=False)
+df_operations_data.to_csv("Operations_Data.csv", index=False)
+df_transcript_data.to_csv("Transcript_Data.csv", index=False)
+
+print("Data generation complete. 5 datasets successfully saved:")
+print(f"1. Member_Profile.csv      -> Shape: {df_member_profile.shape}")
+print(f"2. Interaction_History.csv  -> Shape: {df_interaction_history.shape}")
+print(f"3. Service_Performance.csv  -> Shape: {df_service_performance.shape}")
+print(f"4. Operations_Data.csv      -> Shape: {df_operations_data.shape}")
+print(f"5. Transcript_Data.csv      -> Shape: {df_transcript_data.shape}")
+
